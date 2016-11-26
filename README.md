@@ -1,7 +1,7 @@
 Warning
 =======
 
-This repository contains binaries which contain OSX Pirrit malware.
+This repository contains binaries that are infected with the OSX Pirrit malware.
 
 Backstory
 =========
