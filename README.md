@@ -6,17 +6,17 @@ This repository contains binaries that are infected with the OSX Pirrit malware.
 Backstory
 =========
 
-Recently I've been volenteering some of my free time to help children learn to program software and tinker with electronics and I thought it might be neat for the kids to build an old school arcade machine. As part of my initial research into this I had compiled MAME on my new MacBook and was searching for some ROMs that I could try out. The first ROM that I downloaded just happened to be infected with some nasty Malware...
+Recently I've been volunteering some of my free time to help children learn to program software and tinker with electronics and I thought it might be neat for the kids to build an old school arcade machine. As part of my initial research into this I had compiled MAME on my new MacBook and was searching for some ROMs to try out. The first ROM that I downloaded just happened to be infected with some nasty Malware...
 
-If you're curious, the ROM was for [Galaxian](https://en.wikipedia.org/wiki/Galaxian) and [here is/was the actual download link](http://www.freeroms.com/dl_roms/rom_download.php?title=galaxian_midway&system=MAME&game_id=5674)
+If you're curious, the ROM was for [Galaxian](https://en.wikipedia.org/wiki/Galaxian) and [here is/was the actual download link](http://www.freeroms.com/dl_roms/rom_download.php?title=galaxian_midway&system=MAME&game_id=5674). 
 
 Now at this point I should mention that from time-to-time I can be quite a careless individual. The ROM in question was packaged such that upon execution I was immediately asked to enter my root password. Stupid me complied without thinking twice. It was late. I was tired. And quite frankly my fingers were typing in auto-pilot mode at this point. My bad.
 
 Almost immediately I knew that I had f**ked up.
 
-Suddenly, some shadey "software services" appeared on my laptop and Safari started behaving odd. Convinced that I'd been compromised by "something" I immediately downloaded ESET Cyber Security for Mac and ran a scan. 
+Suddenly, some shadey "software services" appeared on my laptop and Safari started behaving oddly. Convinced that I'd been compromised by "something" I immediately downloaded ESET Cyber Security for Mac and ran a scan. 
 
-Nothing.... My MacBook appeared clean. I was not convinced however.
+Nothing.... My MacBook appeared clean. I was not convinced.
 
 I checked my running processes and one in particular stood out. It looked like a whole bunch of javascript code passed as an argument to "/usr/bin/osascript".
 
@@ -29,9 +29,15 @@ I checked my running processes and one in particular stood out. It looked like a
 
 What in the hell is osascript? A quick google search revealed it to be part of the [Apple Open Scripting Architecture](https://developer.apple.com/library/content/documentation/AppleScript/Conceptual/AppleScriptX/Concepts/osa.html). 
 
-A closer look and I could see that something else was being "bootstrapped" from the the domain aa9bd78f328a6a41279d0fad0a88df1901.com. Looks legit....
+A closer look and I could see that something else was being "bootstrapped" from the the domain aa9bd78f328a6a41279d0fad0a88df1901.com. Looks legit right?....
 
 So I run a wget on the full URL and inspect the result which [you can see here](../blob/master/malicious.js). And there it was. Shitty adware.
 
-I run some "kill -9" commands on the osascript processes but they just keep coming back. O.K. what's kicking them off? I check the PPID on the process and reveal that [/Library/research/research](../blob/master/research.do.not.execute). I back him up so I can take a closer look later -- then I delete it from its current location. I kill the "research" process and all of the "osascript" child processes, which don't respawn.
+I run some "kill -9" commands on the osascript processes but they just keep coming back. O.K. what's kicking THEM off? I check the PPID on the process and reveal it to be "/Library/research/research". I back him up ([downloadable here]((../blob/master/research.do.not.execute)) so I can take a closer look later -- then I delete it from its current location. I kill the process and all of the "osascript" child processes, which don't respawn. A quick cleanup of some shady .plist files and I'm satisfied that I've managed to get rid of it.
 
+Why didn't AV pick it up?
+=========================
+
+So this I didn't expect. Surely this malware has been classified by now? So I post a question to [/r/malware](https://redd.it/5ea9bd) and shortly later I get a response from Cyber Security Researcher [Amit Serper](https://twitter.com/0xAmit) of [Cybereason](http://cybereason.com). Amit explains that the malware I'd encountered is a variant of OSX Pirrit which he initially discovered and analysed earlier in the year. [Here is that analysis](http://go.cybereason.com/rs/996-YZT-709/images/Cybereason-Lab-Analysis-OSX-Pirrit-4-6-16.pdf) if you're interested.
+
+So this is a new varient of the same Malware OSX Pirrit and my AV simply didn't have a signature for it yet. Being the nice guy that I am, I follow ESET's instructions on [how to report a suspicious file](http://support.eset.com/kb141/#SubmitFile). Within hours I get a reply thanking me for my submission and that a signature update would be pushed out shortly. Which it was. In fact, the turn-around time was literally *just hours*.
