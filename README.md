@@ -31,9 +31,9 @@ What in the hell is osascript? A quick google search revealed it to be part of t
 
 A closer look and I could see that something else was being "bootstrapped" from the the domain aa9bd78f328a6a41279d0fad0a88df1901.com. Looks legit right?....
 
-So I run a wget on the full URL and inspect the result which [you can see here](../blob/master/malicious.js). And there it was. Shitty adware.
+So I run a wget on the full URL and inspect the result which [you can see here](https://github.com/S73417H/Pirrit/blob/master/malicious.js). And there it was. Shitty adware.
 
-I run some "kill -9" commands on the osascript processes but they just keep coming back. O.K. what's kicking THEM off? I check the PPID on the process and reveal it to be "/Library/research/research". I back him up ([downloadable here]((../blob/master/research.do.not.execute)) so I can take a closer look later -- then I delete it from its current location. I kill the process and all of the "osascript" child processes, which don't respawn. A quick cleanup of some shady .plist files and I'm satisfied that I've managed to get rid of it.
+I run some "kill -9" commands on the osascript processes but they just keep coming back. O.K. what's kicking THEM off? I check the PPID on the process and reveal it to be "/Library/research/research". I back him up ([downloadable here](https://github.com/S73417H/Pirrit/raw/master/research.do.not.execute)) so I can take a closer look later -- then I delete it from its current location. I kill the process and all of the "osascript" child processes, which don't respawn. A quick cleanup of some shady .plist files and I'm satisfied that I've managed to get rid of it.
 
 Why didn't AV pick it up?
 =========================
